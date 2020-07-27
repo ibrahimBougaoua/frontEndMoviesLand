@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Post from "./post";
 import axios from 'axios';
-import Resultat from "./resultat";
 
 // handle button click of login form
 async function recommended() {

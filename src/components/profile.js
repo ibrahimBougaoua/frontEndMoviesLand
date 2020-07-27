@@ -73,27 +73,6 @@ export default class Profile extends Component {
           this.setState({
             user: response.data
           });
-          this.setState({
-            fisrtname: this.state.user[0]
-          });
-          this.setState({
-            lastname: this.state.user[1]
-          });
-          this.setState({
-            email: this.state.user[2]
-          });
-          this.setState({
-            sex: this.state.user[3]
-          });
-          this.setState({
-            age: this.state.user[4]
-          });
-          this.setState({
-            country: this.state.user[5]
-          });
-          this.setState({
-            telephone: this.state.user[6]
-          });
         });
       }
 
@@ -130,21 +109,21 @@ return (
                         <div className="form-group row">
                             <label for="name" className="col-md-4 col-form-label text-md-right">Firstname</label>
                             <div className="col-md-6">
-                                <input id="name" type="text" onChange={this.handleChangeFisrtname} className="form-control" name="name" value={this.state.fisrtname} />
+                                <input id="name" type="text" onChange={this.handleChangeFisrtname} className="form-control" name="name" value={this.state.user[0]} />
                             </div>
                         </div>
 
                         <div className="form-group row">
                             <label for="name" className="col-md-4 col-form-label text-md-right">Lastname</label>
                             <div className="col-md-6">
-                                <input id="name" type="text" onChange={this.handleChangeLastname} className="form-control" name="name" value={this.state.lastname} />
+                                <input id="name" type="text" onChange={this.handleChangeLastname} className="form-control" name="name" value={this.state.user[1]} />
                             </div>
                         </div>
 
                         <div className="form-group row">
                             <label for="email" className="col-md-4 col-form-label text-md-right">E-Mail Address</label>
                             <div className="col-md-6">
-                                <input id="email" type="email" onChange={this.handleChangeEmail} className="form-control" name="email" value={this.state.email} />
+                                <input id="email" type="email" onChange={this.handleChangeEmail} className="form-control" name="email" value={this.state.user[2]} />
                             </div>
                         </div>
 
@@ -158,7 +137,7 @@ return (
                         <div className="form-group row">
                             <label for="name" className="col-md-4 col-form-label text-md-right">Sex</label>
                             <div className="col-md-6">
-                            <select name="sex" class="form-control" value={this.state.sex} onChange={this.handleChangeSex}>
+                            <select name="sex" class="form-control" value={this.state.user[3]} onChange={this.handleChangeSex}>
                                 <option value="male">male</option>
                                 <option value="female">female</option>
                             </select>
@@ -167,7 +146,7 @@ return (
                         <div className="form-group row">
                             <label for="name" className="col-md-4 col-form-label text-md-right">Age</label>
                             <div className="col-md-6">
-                            <select name="age" class="form-control" value={this.state.age} onChange={this.handleChangeAge}>
+                            <select name="age" class="form-control" value={this.state.user[4]} onChange={this.handleChangeAge}>
                                 <option value="15">15</option>
                                 <option value="16">16</option>
                                 <option value="17">17</option>
@@ -185,7 +164,7 @@ return (
                         <div className="form-group row">
                             <label for="name" className="col-md-4 col-form-label text-md-right">Country</label>
                             <div className="col-md-6">
-                            <select name="country" class="form-control" value={this.state.country} onChange={this.handleChangeCountry}>
+                            <select name="country" class="form-control" value={this.state.user[5]} onChange={this.handleChangeCountry}>
                                 <option value="alger">alger</option>
                                 <option value="moroco">moroco</option>
                             </select>
@@ -194,7 +173,7 @@ return (
                         <div className="form-group row">
                             <label for="name" className="col-md-4 col-form-label text-md-right">Telephone</label>
                             <div className="col-md-6">
-                                <input id="name" type="text" onChange={this.handleChangeTelephone} className="form-control" name="telephone" value={this.state.telephone} />
+                                <input id="name" type="text" onChange={this.handleChangeTelephone} className="form-control" name="telephone" value={this.state.user[6]} />
                             </div>
                         </div>
                         <div className="form-group row mb-0">

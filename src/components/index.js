@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route , withRouter } from "react-router-dom";
 import Footer from "./footer";
 import Home from "./home";
 import Login from "./login";
@@ -68,12 +68,14 @@ export default class Index extends Component {
   }
 
   componentDidMount =()=>{
+        if(this.state.search !== ''){
+
     resultat(this.state.search,this.state.cate).then(response => {
       this.setState({
         dataMovies: response.data
       });
     });
-    
+    }
   }
 
 render() {
@@ -108,13 +110,38 @@ return (
             <option value="actor">actor</option>
             <option value="tag">tag</option>
           </select>
-          <button className="btn btn-sm btn-outline-info my-sm-0 ml-2" onClick={searchMovies} type="submit">Search</button>
+          <button className="btn btn-sm btn-outline-info my-sm-0 ml-2" data-toggle="modal" data-target="#exampleModal" onClick={searchMovies} type="submit">Search</button>
       </form>
 </div>
 
 {
   this.state.visible
-    ? <Resultat link="/movie/single/" elements={this.state.searchDataMovies}></Resultat>
+    ? <div className="modal fade bd-example-modal-xl" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div className="modal-dialog modal-xl" role="document">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h5 className="modal-title" id="exampleModalLabel">Searching...</h5>
+        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div className="modal-body">
+      <div className="card border-0 rounded-0 shadow-sm bg-light">
+  <div className="row no-gutters">
+  <div className="col-md-12">
+    
+  <Resultat link="/movie/single/" elements={this.state.searchDataMovies}></Resultat>
+
+  </div>
+  </div>
+      </div>
+      </div>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
     : null
 }
 
@@ -128,7 +155,7 @@ return (
         <Route path="/history" component={History} />
         <Route path="/abonnements" component={Abonnement} />
         <Route path="/list" component={List} />
-        <Route path="/movie/single/:id" exact component={Single} />
+        <Route path="/movie/single/:id" component={withRouter(Single)} />
         <Route path="/movie/actor/:actor" exact component={Actor} />
         <Route path="/movie/tag/:tag" exact component={Tag} />
   </Switch>
