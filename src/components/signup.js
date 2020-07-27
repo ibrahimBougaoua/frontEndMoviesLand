@@ -3,27 +3,27 @@ import axios from 'axios';
 import MultiSelect from "@khanacademy/react-multi-select";
 
 const options = [
-{label: "adventure", value: 1},
-{label: "animation", value: 2},
-{label: "children", value: 3},
-{label: "comedy", value: 4},
-{label: "fantasy", value: 5},
-{label: "romance", value: 6},
-{label: "action", value: 7},
-{label: "crime", value: 8},
-{label: "thriller", value: 9},
-{label: "horror", value: 10},
-{label: "mystery", value: 11},
-{label: "sci-Fi", value: 12},
-{label: "documentary", value: 13},
-{label: "imax", value: 14},
+{label: "adventure", value: "adventure"},
+{label: "animation", value: "animation"},
+{label: "children", value: "children"},
+{label: "comedy", value: "comedy"},
+{label: "fantasy", value: "fantasy"},
+{label: "romance", value: "romance"},
+{label: "action", value: "action"},
+{label: "crime", value: "crime"},
+{label: "thriller", value: "thriller"},
+{label: "horror", value: "horror"},
+{label: "mystery", value: "mystery"},
+{label: "sci-Fi", value: "sci-Fi"},
+{label: "documentary", value: "documentary"},
+{label: "imax", value: "imax"},
 ];
 
 export default class Signup extends Component {
     
     constructor(props) {
         super(props);
-        this.state = {fisrtname: '',lastname: '',email: '',password: '',sexe: 'male',age: 15,country: 'alger',telephone: '',errorMessage: '',selected: []};
+        this.state = {fisrtname: '',lastname: '',email: '',password: '',sexe: 'male',age: 15,country: 'NC',telephone: '',errorMessage: '',selected: []};
         
         this.handleChangeFisrtname = this.handleChangeFisrtname.bind(this);
         this.handleChangeLastname = this.handleChangeLastname.bind(this);
@@ -73,18 +73,19 @@ export default class Signup extends Component {
       }
 
     render() {
-        const {selected} = this.state;
+
+    const {selected} = this.state;
 
 // handle button click of signin form
 const handleSignin = () => {
-    axios.get('http://127.0.0.1:5000/movie/singup', {params : {fisrtname : this.state.fisrtname,lastname : this.state.lastname,email : this.state.email,password : this.state.password,sex : this.state.sexe,age : this.state.age,country : this.state.country,telephone : this.state.telephone,tags : this.state.selected}})
+    axios.get('http://127.0.0.1:5000/movie/singup/', {params : {fisrtname : this.state.fisrtname,lastname : this.state.lastname,email : this.state.email,password : this.state.password,sexe : this.state.sexe,age : this.state.age,country : this.state.country,telephone : this.state.telephone,tags : this.state.selected.toString()}})
     .then(response =>  {
       // setter
       //this.setState({errorMessage: response.data});
       localStorage.setItem('token', response.data.token)
       localStorage.setItem('email', response.data.email)
       // route for profile
-      window.location.replace("/account")
+      //window.location.replace("/account")
       console.log(response.data)
     }).catch(error => {
       this.setState({errorMessage: 'username or password is wrong !'});
@@ -141,6 +142,12 @@ return (
                                 <option value="female">female</option>
                             </select>
                         </div>
+
+                        <div className="form-group  col-md-6">
+                            <label for="name">Tags</label>
+                            <MultiSelect options={options} selected={selected} onSelectedChanged={selected => this.setState({selected})} />
+                        </div>
+
                         <div className="form-group  col-md-6">
                             <label for="name">Age</label>
                             <select name="age" class="form-control" value={this.state.age} onChange={this.handleChangeAge}>
@@ -157,18 +164,11 @@ return (
                             <label for="name">Telephone</label>
                             <input id="name" type="text" value={this.state.telephone} onChange={this.handleChangeTelephone} className="form-control" name="name" />
                         </div>
-                        <div className="form-group  col-md-6">
-                            <label for="name">Genre</label>
-                            <MultiSelect options={options} selected={selected} onSelectedChanged={selected => this.setState({selected})} />
+
+                        <div className="form-group  col-md-12">
+                            <button type="submit" className="btn btn-primary" onClick={handleSignin}>Register</button>
                         </div>
 
-                        <div className="form-group row mb-0">
-                            <div className="col-md-6 offset-md-4">
-                                <button type="submit" className="btn btn-primary" onClick={handleSignin}>
-                                    Register
-                                </button>
-                            </div>
-                        </div>
                         </div>
                     </form>
                 </div>
