@@ -1,20 +1,45 @@
 import React, { Component } from "react";
 import axios from 'axios';
+import ReactDOM from 'react-dom';
+import { WithContext as ReactTags } from 'react-tag-input';
 
+const KeyCodes = {
+    comma: 188,
+    enter: 13,
+  };
+   
+const delimiters = [KeyCodes.comma, KeyCodes.enter];
+   
 export default class Signup extends Component {
     
     constructor(props) {
         super(props);
-        this.state = {fisrtname: '',lastname: '',email: '',password: '',sex: 'male',age: 15,country: 'alger',telephone: '',errorMessage: ''};
+        this.state = {fisrtname: '',lastname: '',email: '',password: '',sexe: 'male',age: 15,country: 'alger',telephone: '',errorMessage: ''
+    ,
+        tags: [
+            { id: "Thailand", text: "Thailand" },
+            { id: "India", text: "India" }
+         ],
+        suggestions: [
+            { id: 'USA', text: 'USA' },
+            { id: 'Germany', text: 'Germany' },
+            { id: 'Austria', text: 'Austria' },
+            { id: 'Costa Rica', text: 'Costa Rica' },
+            { id: 'Sri Lanka', text: 'Sri Lanka' },
+            { id: 'Thailand', text: 'Thailand' }
+         ]};
         
         this.handleChangeFisrtname = this.handleChangeFisrtname.bind(this);
         this.handleChangeLastname = this.handleChangeLastname.bind(this);
         this.handleChangeEmail = this.handleChangeEmail.bind(this);
         this.handleChangePassword = this.handleChangePassword.bind(this);
-        this.handleChangeSex = this.handleChangeSex.bind(this);
+        this.handleChangeSexe = this.handleChangeSexe.bind(this);
         this.handleChangeAge = this.handleChangeAge.bind(this);
         this.handleChangeCountry = this.handleChangeCountry.bind(this);
         this.handleChangeTelephone = this.handleChangeTelephone.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+        this.handleAddition = this.handleAddition.bind(this);
+        this.handleDrag = this.handleDrag.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
       }
     
@@ -34,31 +59,55 @@ export default class Signup extends Component {
         this.setState({password: event.target.value});
       }
 
-      handleChangeSex(event) {
-        this.setState({sex: event.target.options[event.target.selectedIndex].text});
+      handleChangeSexe(event) {
+        this.setState({sexe: event.target.options[event.target.selectedIndex].value});
       }
 
       handleChangeAge(event) {
-        this.setState({age: event.target.options[event.target.selectedIndex].text});
+        this.setState({age: event.target.options[event.target.selectedIndex].value});
       }
 
       handleChangeCountry(event) {
-        this.setState({country: event.target.options[event.target.selectedIndex].text});
+        this.setState({country: event.target.options[event.target.selectedIndex].value});
       }
 
       handleChangeTelephone(event) {
         this.setState({telephone: event.target.value});
       }
     
+      handleDelete(i) {
+        const { tags } = this.state;
+        this.setState({
+         tags: tags.filter((tag, index) => index !== i),
+        });
+    }
+ 
+    handleAddition(tag) {
+        this.setState(state => ({ tags: [...state.tags, tag] }));
+    }
+ 
+    handleDrag(tag, currPos, newPos) {
+        const tags = [...this.state.tags];
+        const newTags = tags.slice();
+ 
+        newTags.splice(currPos, 1);
+        newTags.splice(newPos, 0, tag);
+ 
+        // re-render
+        this.setState({ tags: newTags });
+    }
+
       handleSubmit(event) {
         event.preventDefault();
       }
 
     render() {
 
+const { tags, suggestions } = this.state;
+
 // handle button click of signin form
 const handleSignin = () => {
-    axios.get('http://127.0.0.1:5000/movie/singup', {params : {fisrtname : this.state.fisrtname,lastname : this.state.lastname,email : this.state.email,password : this.state.password,sex : this.state.sex,age : this.state.age,country : this.state.country,telephone : this.state.telephone}})
+    axios.get('http://127.0.0.1:5000/movie/singup', {params : {fisrtname : this.state.fisrtname,lastname : this.state.lastname,email : this.state.email,password : this.state.password,sex : this.state.sexe,age : this.state.age,country : this.state.country,telephone : this.state.telephone}})
     .then(response =>  {
       // setter
       //this.setState({errorMessage: response.data});
@@ -125,7 +174,7 @@ return (
                         <div className="form-group row">
                             <label for="name" className="col-md-4 col-form-label text-md-right">Sex</label>
                             <div className="col-md-6">
-                            <select name="sex" class="form-control" value={this.state.sex} onChange={this.handleChangeSex}>
+                            <select name="sexe" class="form-control" value={this.state.sexe} onChange={this.handleChangeSexe}>
                                 <option value="male">male</option>
                                 <option value="female">female</option>
                             </select>
@@ -151,6 +200,17 @@ return (
                             <label for="name" className="col-md-4 col-form-label text-md-right">Telephone</label>
                             <div className="col-md-6">
                                 <input id="name" type="text" value={this.state.telephone} onChange={this.handleChangeTelephone} className="form-control" name="name" />
+                            </div>
+                        </div>
+                        <div className="form-group row">
+                            <label for="name" className="col-md-4 col-form-label text-md-right">Genre</label>
+                            <div className="col-md-6">
+                            <ReactTags tags={tags}
+                    suggestions={suggestions}
+                    handleDelete={this.handleDelete}
+                    handleAddition={this.handleAddition}
+                    handleDrag={this.handleDrag}
+                    delimiters={delimiters} />
                             </div>
                         </div>
 
