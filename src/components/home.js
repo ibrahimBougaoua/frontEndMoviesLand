@@ -57,19 +57,25 @@ if(localStorage.getItem('email')){
     visibleComponent: true
   });
     recommended().then(response => {
+    if(response){
       this.setState({
         recommend: response.data
       });
+    }
     });
     recommendedByAge().then(response => {
+    if(response){
       this.setState({
         moviesByAgs: response.data
       });
+    }
     });
     recommendedByCountry().then(response => {
+    if(response){
       this.setState({
         moviesByCountry: response.data
       });
+    }
     });
   }
     getTopData().then(response => {
