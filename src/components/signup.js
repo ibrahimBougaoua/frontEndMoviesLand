@@ -1,33 +1,29 @@
 import React, { Component } from "react";
 import axios from 'axios';
-import ReactDOM from 'react-dom';
-import { WithContext as ReactTags } from 'react-tag-input';
+import MultiSelect from "@khanacademy/react-multi-select";
 
-const KeyCodes = {
-    comma: 188,
-    enter: 13,
-  };
-   
-const delimiters = [KeyCodes.comma, KeyCodes.enter];
-   
+const options = [
+{label: "adventure", value: 1},
+{label: "animation", value: 2},
+{label: "children", value: 3},
+{label: "comedy", value: 4},
+{label: "fantasy", value: 5},
+{label: "romance", value: 6},
+{label: "action", value: 7},
+{label: "crime", value: 8},
+{label: "thriller", value: 9},
+{label: "horror", value: 10},
+{label: "mystery", value: 11},
+{label: "sci-Fi", value: 12},
+{label: "documentary", value: 13},
+{label: "imax", value: 14},
+];
+
 export default class Signup extends Component {
     
     constructor(props) {
         super(props);
-        this.state = {fisrtname: '',lastname: '',email: '',password: '',sexe: 'male',age: 15,country: 'alger',telephone: '',errorMessage: ''
-    ,
-        tags: [
-            { id: "Thailand", text: "Thailand" },
-            { id: "India", text: "India" }
-         ],
-        suggestions: [
-            { id: 'USA', text: 'USA' },
-            { id: 'Germany', text: 'Germany' },
-            { id: 'Austria', text: 'Austria' },
-            { id: 'Costa Rica', text: 'Costa Rica' },
-            { id: 'Sri Lanka', text: 'Sri Lanka' },
-            { id: 'Thailand', text: 'Thailand' }
-         ]};
+        this.state = {fisrtname: '',lastname: '',email: '',password: '',sexe: 'male',age: 15,country: 'alger',telephone: '',errorMessage: '',selected: []};
         
         this.handleChangeFisrtname = this.handleChangeFisrtname.bind(this);
         this.handleChangeLastname = this.handleChangeLastname.bind(this);
@@ -37,9 +33,6 @@ export default class Signup extends Component {
         this.handleChangeAge = this.handleChangeAge.bind(this);
         this.handleChangeCountry = this.handleChangeCountry.bind(this);
         this.handleChangeTelephone = this.handleChangeTelephone.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
-        this.handleAddition = this.handleAddition.bind(this);
-        this.handleDrag = this.handleDrag.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
       }
     
@@ -74,40 +67,17 @@ export default class Signup extends Component {
       handleChangeTelephone(event) {
         this.setState({telephone: event.target.value});
       }
-    
-      handleDelete(i) {
-        const { tags } = this.state;
-        this.setState({
-         tags: tags.filter((tag, index) => index !== i),
-        });
-    }
- 
-    handleAddition(tag) {
-        this.setState(state => ({ tags: [...state.tags, tag] }));
-    }
- 
-    handleDrag(tag, currPos, newPos) {
-        const tags = [...this.state.tags];
-        const newTags = tags.slice();
- 
-        newTags.splice(currPos, 1);
-        newTags.splice(newPos, 0, tag);
- 
-        // re-render
-        this.setState({ tags: newTags });
-    }
-
+      
       handleSubmit(event) {
         event.preventDefault();
       }
 
     render() {
-
-const { tags, suggestions } = this.state;
+        const {selected} = this.state;
 
 // handle button click of signin form
 const handleSignin = () => {
-    axios.get('http://127.0.0.1:5000/movie/singup', {params : {fisrtname : this.state.fisrtname,lastname : this.state.lastname,email : this.state.email,password : this.state.password,sex : this.state.sexe,age : this.state.age,country : this.state.country,telephone : this.state.telephone}})
+    axios.get('http://127.0.0.1:5000/movie/singup', {params : {fisrtname : this.state.fisrtname,lastname : this.state.lastname,email : this.state.email,password : this.state.password,sex : this.state.sexe,age : this.state.age,country : this.state.country,telephone : this.state.telephone,tags : this.state.selected}})
     .then(response =>  {
       // setter
       //this.setState({errorMessage: response.data});
@@ -138,7 +108,7 @@ const listAge = ages.map((element) =>
 return (
 <div className="container mt-2 mb-5 mt-5">
     <div className="row justify-content-center position-relative">
-        <div className="col-md-8">
+        <div className="col-md-12">
             <div className="card border-0 shadow">
 
               { this.state.errorMessage && <div class="alert alert-danger" role="alert">{ this.state.errorMessage }</div> }
@@ -147,71 +117,49 @@ return (
 
                 <div className="card-body">
                     <form method="POST" onSubmit={this.handleSubmit}>
-                        <div className="form-group row">
-                            <label for="name" className="col-md-4 col-form-label text-md-right">FirstName</label>
-                            <div className="col-md-6">
-                                <input id="name" type="text" value={this.state.fisrtname} onChange={this.handleChangeFisrtname} className="form-control" name="name" />
-                            </div>
+                    <div class="form-row">
+                        <div className="form-group  col-md-6">
+                            <label for="name">FirstName</label>
+                            <input id="name" type="text" value={this.state.fisrtname} onChange={this.handleChangeFisrtname} className="form-control" name="name" />
                         </div>
-                        <div className="form-group row">
-                            <label for="name" className="col-md-4 col-form-label text-md-right">LastName</label>
-                            <div className="col-md-6">
-                                <input id="name" type="text" value={this.state.lastname} onChange={this.handleChangeLastname} className="form-control" name="name" />
-                            </div>
+                        <div className="form-group  col-md-6">
+                            <label for="name">LastName</label>
+                            <input id="name" type="text" value={this.state.lastname} onChange={this.handleChangeLastname} className="form-control" name="name" />
                         </div>
-                        <div className="form-group row">
-                            <label for="email" className="col-md-4 col-form-label text-md-right">E-Mail Address</label>
-                            <div className="col-md-6">
-                                <input id="email" type="email" value={this.state.email} onChange={this.handleChangeEmail} className="form-control" name="email" />
-                            </div>
+                        <div className="form-group  col-md-6">
+                            <label for="email">E-Mail Address</label>
+                            <input id="email" type="email" value={this.state.email} onChange={this.handleChangeEmail} className="form-control" name="email" />
                         </div>
-                        <div className="form-group row">
-                            <label for="password" className="col-md-4 col-form-label text-md-right">Password</label>
-                            <div className="col-md-6">
-                                <input id="password" type="password" value={this.state.password} onChange={this.handleChangePassword} className="form-control" name="password" />
-                            </div>
+                        <div className="form-group  col-md-6">
+                            <label for="password">Password</label>
+                            <input id="password" type="password" value={this.state.password} onChange={this.handleChangePassword} className="form-control" name="password" />
                         </div>
-                        <div className="form-group row">
-                            <label for="name" className="col-md-4 col-form-label text-md-right">Sex</label>
-                            <div className="col-md-6">
+                        <div className="form-group  col-md-6">
+                            <label for="name">Sex</label>
                             <select name="sexe" class="form-control" value={this.state.sexe} onChange={this.handleChangeSexe}>
                                 <option value="male">male</option>
                                 <option value="female">female</option>
                             </select>
-                            </div>
                         </div>
-                        <div className="form-group row">
-                            <label for="name" className="col-md-4 col-form-label text-md-right">Age</label>
-                            <div className="col-md-6">
+                        <div className="form-group  col-md-6">
+                            <label for="name">Age</label>
                             <select name="age" class="form-control" value={this.state.age} onChange={this.handleChangeAge}>
                                 {listAge}
                             </select>
-                            </div>
                         </div>
-                        <div className="form-group row">
-                            <label for="name" className="col-md-4 col-form-label text-md-right">Country</label>
-                            <div className="col-md-6">
+                        <div className="form-group  col-md-6">
+                            <label for="name">Country</label>
                             <select name="country" class="form-control" value={this.state.country} onChange={this.handleChangeCountry}>
                                 {listCountry}
                             </select>
-                            </div>
                         </div>
-                        <div className="form-group row">
-                            <label for="name" className="col-md-4 col-form-label text-md-right">Telephone</label>
-                            <div className="col-md-6">
-                                <input id="name" type="text" value={this.state.telephone} onChange={this.handleChangeTelephone} className="form-control" name="name" />
-                            </div>
+                        <div className="form-group  col-md-6">
+                            <label for="name">Telephone</label>
+                            <input id="name" type="text" value={this.state.telephone} onChange={this.handleChangeTelephone} className="form-control" name="name" />
                         </div>
-                        <div className="form-group row">
-                            <label for="name" className="col-md-4 col-form-label text-md-right">Genre</label>
-                            <div className="col-md-6">
-                            <ReactTags tags={tags}
-                    suggestions={suggestions}
-                    handleDelete={this.handleDelete}
-                    handleAddition={this.handleAddition}
-                    handleDrag={this.handleDrag}
-                    delimiters={delimiters} />
-                            </div>
+                        <div className="form-group  col-md-6">
+                            <label for="name">Genre</label>
+                            <MultiSelect options={options} selected={selected} onSelectedChanged={selected => this.setState({selected})} />
                         </div>
 
                         <div className="form-group row mb-0">
@@ -220,6 +168,7 @@ return (
                                     Register
                                 </button>
                             </div>
+                        </div>
                         </div>
                     </form>
                 </div>
