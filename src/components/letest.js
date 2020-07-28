@@ -27,7 +27,7 @@ async function recommended() {
 // get age from access token -> data
 async function recommendedByGender() {
     try {
-      const response = await axios.get('http://127.0.0.1:5000/movie/age/' + localStorage.getItem('email'));
+      const response = await axios.get('http://127.0.0.1:5000/movie/sexe/' + localStorage.getItem('email'));
       console.log(response);
       return response;
     } catch (error) {
