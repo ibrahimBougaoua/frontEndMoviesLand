@@ -13,15 +13,6 @@ async function viewsMovies() {
     }
 }
 
-async function actorMovies() {
-    try {
-      const response = await axios.get('http://127.0.0.1:5000/movie/history/actor/email/' + localStorage.getItem('email'));
-      console.log(response);
-      return response;
-    } catch (error) {
-      console.error(error);
-    }
-}
 async function tagMovies() {
     try {
       const response = await axios.get('http://127.0.0.1:5000/movie/history/tag/email/' + localStorage.getItem('email'));
@@ -34,17 +25,12 @@ async function tagMovies() {
 
 export default class History extends Component {
 
-state = { value: 2,moviesViews: [],moviesActor: [],moviesTag: [] };
+state = { value: 2,moviesViews: [],moviesTag: [] };
 
 componentDidMount =()=>{
 	viewsMovies().then(response => {
 	  this.setState({
 		moviesViews: response.data
-	  });
-	});
-	actorMovies().then(response => {
-	  this.setState({
-		moviesActor: response.data
 	  });
 	});
 	tagMovies().then(response => {
@@ -76,25 +62,6 @@ const historyViews = this.state.moviesViews.map((element) =>
     </div>
 );
 
-const historyActor = this.state.moviesActor.map((element) => 
-	<div className="card mb-5 border-0 rounded-0 shadow-sm bg-light">
-	<div className="row no-gutters">
-		<div className="col-md-2">
-			<img src={element[13]} class="card-img rounded-0" alt="..." />
-		</div>
-		<div className="col-md-10">
-			<div className="card-body">
-				<h5 className="card-title">{element[3]}</h5>
-				<small className="text-muted">{element[4]}</small><br />
-				<small className="text-muted">{element[5]}</small><br />
-				<small className="text-muted">{element[6]}</small><br />
-				<small className="text-muted">{element[7]}</small><br />
-				<Link className="btn btn-primary btn-sm position-relative" to={"/movie/single/" + element[0]} style={{top: "35px"}}>Show more</Link>
-			</div>
-		</div>
-	</div>
-    </div>
-);
 
 const historyTag = this.state.moviesTag.map((element) => 
 	<div className="card mb-5 border-0 rounded-0 shadow-sm bg-light">
@@ -124,7 +91,6 @@ return (
 <nav className="mb-3">
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
     <a class="nav-item nav-link active" id="nav-view-tab" data-toggle="tab" href="#nav-view" role="tab" aria-controls="nav-cviewontact" aria-selected="true">View</a>
-    <a class="nav-item nav-link text-muted" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Actor</a>
     <a class="nav-item nav-link text-muted" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Tag</a>
   </div>
 </nav>
@@ -132,10 +98,6 @@ return (
 
 <div class="tab-pane fade show active" id="nav-view" role="tabpanel" aria-labelledby="nav-view-tab">
 {historyViews}
-</div>
-
-<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-{historyActor}
 </div>
 
 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
