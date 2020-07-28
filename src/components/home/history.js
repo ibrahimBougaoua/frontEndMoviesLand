@@ -50,17 +50,10 @@ const historyViews = this.state.moviesViews.map((element) =>
 return (
 <div className="container mt-5">
 
-<nav className="mb-3">
-  <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <a class="nav-item nav-link active" id="nav-view-tab" data-toggle="tab" href="#nav-view" role="tab" aria-controls="nav-cviewontact" aria-selected="true">View</a>
-  </div>
-</nav>
-<div class="tab-content" id="nav-tabContent">
+<p className="lead text-sm-left">history</p>
 
-<div class="tab-pane fade show active" id="nav-view" role="tabpanel" aria-labelledby="nav-view-tab">
+<div className="col-md-12">
 {historyViews}
-</div>
-
 </div>
 
 </div>
