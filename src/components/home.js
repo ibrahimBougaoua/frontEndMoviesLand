@@ -193,7 +193,6 @@ return (
     ? <Post name="Users in your area like" link="/movie/single/" elements={this.state.moviesByCountry}></Post>
     : null
 }
-                <Post name="Top rating" link="/movie/single/" elements={this.state.movies}></Post>
             </div>
         </div>
     </div>
